@@ -6,16 +6,57 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-<form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index">
-    <div class="form-group">
-        <div class="col-md-10">
-            <p>Upload one or more files using this form:</p>
-            <input type="file" name="files" multiple>
+<div class="ImageSearching">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+            <form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <p>Upload one or more files using this form:</p>
+                        <input type="file" name="files" multiple>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" value="Upload">
+                    </div>
+                </div>
+            </form><div class="gcse-searchbox"></div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" value="Upload">
+        <div class="col-sm">
+            <h1>Or u can just input image by ctrl+v  to this field</h1>
         </div>
-    </div>
-</form>
+        <div class="col-sm">
+
+        </div>
+        </div>
+        </div>
+    </div> 
+<div class="gcse-searchresults" enableImageSearch="true" ></div>
+ <div class="ImagePushing">
+     <img src="" id="originalImage"/>
+ </div>
+
+<script type="text/javascript">
+  document.onpaste = function (event) { 
+  var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
+  console.log(JSON.stringify(items)); 
+  var blob = null;
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf("image") === 0) {
+        blob = items[i].getAsFile();
+        console.log(blob);
+    }
+  } 
+  if (blob !== null) {
+    var reader = new FileReader();
+      reader.onload = function (event) { 
+          var image = document.getElementById("originalImage");
+          image.setAttribute("src",  event.target.result);
+      };
+      reader.readAsDataURL(blob); 
+     
+  }
+}
+</script>

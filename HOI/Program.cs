@@ -22,7 +22,7 @@ namespace HOI
             .UseStartup<Startup>()
              .UseKestrel(options =>
              {
-                 options.ListenAnyIP(Int32.Parse(System.Environment.GetEnvironmentVariable("PORT")));
+                 //options.ListenAnyIP(Int32.Parse(System.Environment.GetEnvironmentVariable("PORT")));
              });
     }
 }
