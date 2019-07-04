@@ -28,7 +28,15 @@
             <h1>Or u can just input image by ctrl+v  to this field</h1>
         </div>
         <div class="col-sm">
-
+            <form method="post"   asp-controller="Api" asp-action="Post">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <p>Upload one or more files using this form:</p>
+                        <input type="text" id="inputForUrl"  name="url"/>
+                        <input type="button"  onclick="GetImageByUrl(event)"/>
+                    </div>
+                </div>
+                </form>
         </div>
         </div>
         </div>
@@ -37,6 +45,7 @@
  <div class="ImagePushing">
      <img src="" id="originalImage"/>
  </div>
+<div class="ImageFromUrls"></div>
 
 <script type="text/javascript">
   document.onpaste = function (event) { 
@@ -59,4 +68,29 @@
      
   }
 }
+</script>
+<script type="text/javascript">
+    var GetImageByUrl = function (e) {
+        
+        e.preventDefault; 
+        var urlValue = $("#inputForUrl").val() 
+        ajaxUrl = "api/api";
+        data = { url : urlValue};
+        $.ajax({
+                        type: "POST",
+                        url: ajaxUrl,
+                        data: data,
+            success: function (data) {
+                data = JSON.parse(data);
+                var html = ""
+                for (var i = 0; i < data.length; i++) {
+                    html+="<img src=\"" + data[i] + "\"\>";
+                }
+                $(".ImageFromUrls")[0].innerHTML=html; 
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    })
+                }
 </script>
