@@ -19,10 +19,6 @@ namespace HOI
 
         public static IWebHostBuilder CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
-             .UseKestrel(options =>
-             {
-                 //options.ListenAnyIP(Int32.Parse(System.Environment.GetEnvironmentVariable("PORT")));
-             });
+            .UseStartup<Startup>();
     }
 }

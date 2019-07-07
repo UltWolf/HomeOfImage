@@ -1,96 +1,112 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿ 
+@{
+    Layout = null;
 }
+<html>
+<head>
+    <title>Hello React</title>
+</head>
+<body>
+    
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.0/umd/react.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.0/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.6.0/prop-types.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+    <script src="@Url.Content("~/js/tutorial.jsx")"></script>
+    @Html.ReactInitJavaScript()
+</body>
+</html>
+@*<div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+    <div class="ImageSearching">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <p>Upload one or more files using this form:</p>
+                                <input type="file" name="files" multiple>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input type="submit" value="Upload">
+                            </div>
+                        </div>
+                    </form><div class="gcse-searchbox"></div>
+                </div>
+                <div class="col-sm">
+                    <h1>Or u can just input image by ctrl+v  to this field</h1>
+                </div>
+                <div class="col-sm">
+                    <form method="post" asp-controller="Api" asp-action="Post">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <p>Upload one or more files using this form:</p>
+                                <input type="text" id="inputForUrl" name="url" />
+                                <input type="button" onclick="GetImageByUrl(event)" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gcse-searchresults" enableImageSearch="true"></div>
+    <div class="ImagePushing">
+        <img src="" id="originalImage" />
+    </div>
+    <div class="ImageFromUrls"></div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-<div class="ImageSearching">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-            <form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index">
-                <div class="form-group">
-                    <div class="col-md-10">
-                        <p>Upload one or more files using this form:</p>
-                        <input type="file" name="files" multiple>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-10">
-                        <input type="submit" value="Upload">
-                    </div>
-                </div>
-            </form><div class="gcse-searchbox"></div>
-        </div>
-        <div class="col-sm">
-            <h1>Or u can just input image by ctrl+v  to this field</h1>
-        </div>
-        <div class="col-sm">
-            <form method="post"   asp-controller="Api" asp-action="Post">
-                <div class="form-group">
-                    <div class="col-md-10">
-                        <p>Upload one or more files using this form:</p>
-                        <input type="text" id="inputForUrl"  name="url"/>
-                        <input type="button"  onclick="GetImageByUrl(event)"/>
-                    </div>
-                </div>
-                </form>
-        </div>
-        </div>
-        </div>
-    </div> 
-<div class="gcse-searchresults" enableImageSearch="true" ></div>
- <div class="ImagePushing">
-     <img src="" id="originalImage"/>
- </div>
-<div class="ImageFromUrls"></div>
+    <script type="text/javascript">
+        document.onpaste = function (event) {
+            var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            console.log(JSON.stringify(items));
+            var blob = null;
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image") === 0) {
+                    blob = items[i].getAsFile();
+                    console.log(blob);
+                }
+            }
+            if (blob !== null) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var image = document.getElementById("originalImage");
+                    image.setAttribute("src", event.target.result);
+                };
+                reader.readAsDataURL(blob);
 
-<script type="text/javascript">
-  document.onpaste = function (event) { 
-  var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
-  console.log(JSON.stringify(items)); 
-  var blob = null;
-  for (var i = 0; i < items.length; i++) {
-    if (items[i].type.indexOf("image") === 0) {
-        blob = items[i].getAsFile();
-        console.log(blob);
-    }
-  } 
-  if (blob !== null) {
-    var reader = new FileReader();
-      reader.onload = function (event) { 
-          var image = document.getElementById("originalImage");
-          image.setAttribute("src",  event.target.result);
-      };
-      reader.readAsDataURL(blob); 
-     
-  }
-}
-</script>
-<script type="text/javascript">
-    var GetImageByUrl = function (e) {
-        
-        e.preventDefault; 
-        var urlValue = $("#inputForUrl").val() 
-        ajaxUrl = "api/api";
-        data = { url : urlValue};
-        $.ajax({
-                        type: "POST",
-                        url: ajaxUrl,
-                        data: data,
-            success: function (data) {
-                data = JSON.parse(data);
-                var html = ""
-                for (var i = 0; i < data.length; i++) {
-                    html+="<img src=\"" + data[i] + "\"\>";
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        var GetImageByUrl = function (e) {
+
+            e.preventDefault;
+            var urlValue = $("#inputForUrl").val()
+            ajaxUrl = "api/api";
+            data = { url: urlValue };
+            $.ajax({
+                type: "POST",
+                url: ajaxUrl,
+                data: data,
+                success: function (data) {
+                    data = JSON.parse(data);
+                    var html = ""
+                    for (var i = 0; i < data.length; i++) {
+                        html += "<img src=\"" + data[i] + "\"\>";
+                    }
+                    $(".ImageFromUrls")[0].innerHTML = html;
+                },
+                error: function (err) {
+                    console.log(err);
                 }
-                $(".ImageFromUrls")[0].innerHTML=html; 
-                        },
-                        error: function (err) {
-                            console.log(err);
-                        }
-                    })
-                }
-</script>
+            })
+        }
+    </script>*@
+<script src="~/ClientApp/Sample.jsx"></script>
+@Html.ReactInitJavaScript();
