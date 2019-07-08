@@ -20,37 +20,10 @@
         <h1 class="display-4">Welcome</h1>
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
-    <div class="ImageSearching">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index">
-                        <div class="form-group">
-                            <div class="col-md-10">
-                                <p>Upload one or more files using this form:</p>
-                                <input type="file" name="files" multiple>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-10">
-                                <input type="submit" value="Upload">
-                            </div>
-                        </div>
-                    </form><div class="gcse-searchbox"></div>
+    
                 </div>
                 <div class="col-sm">
-                    <h1>Or u can just input image by ctrl+v  to this field</h1>
-                </div>
-                <div class="col-sm">
-                    <form method="post" asp-controller="Api" asp-action="Post">
-                        <div class="form-group">
-                            <div class="col-md-10">
-                                <p>Upload one or more files using this form:</p>
-                                <input type="text" id="inputForUrl" name="url" />
-                                <input type="button" onclick="GetImageByUrl(event)" />
-                            </div>
-                        </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>
