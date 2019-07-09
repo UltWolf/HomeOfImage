@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HOI.Controllers
-{
+{ 
     [Route("api/[controller]")]
     public class ApiController : Controller
     {
@@ -21,7 +22,7 @@ namespace HOI.Controllers
 
         // GET api/<controller>/5
         [HttpPost]
-        public async Task<string> Post(string url)
+        public async Task<string> Post([FromBody]string url)
         {
             WebRequest wr = HttpWebRequest.Create(url);
             List<string> ImageSrc = new List<string>();

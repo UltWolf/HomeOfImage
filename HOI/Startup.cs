@@ -35,6 +35,12 @@ namespace HOI
             {
                 configuration.RootPath = "ClientApp/build";
             });
+            services.AddCors(o => o.AddPolicy("Standart", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +60,7 @@ namespace HOI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseCors("Standart");
 
             app.UseMvc(routes =>
             {
