@@ -19,30 +19,37 @@ export class Home extends Component {
 
     
     
-    PasteImage(event) {
-        console.log(event);
-        var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-        console.log(JSON.stringify(items));
-        var blob = null;
-        for (var i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf("image") === 0) {
-                blob = items[i].getAsFile();
-                console.log(blob);
-            }
+    PasteImage = async (event) => {
+        try {
+            var result = await this.readFileAsync(event);
+            this.setState({ imageUrl: result })
+            console.log(this.state.imageUrl);
         }
-        if (blob !== null) {
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                var image = document.getElementById("originalImage");
-                image.setAttribute("src", event.target.result);
-            };
-            reader.readAsDataURL(blob);
+        catch (e) {
+            console.log(e);
         }
     }
-
+    readFileAsync  (event) {
+        return new Promise((resolve, reject) => {
+            var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            var blob = null;
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image") === 0) {
+                    blob = items[i].getAsFile();
+                }
+            }
+            if (blob !== null) {
+                var reader = new FileReader(); 
+                reader.onload = () => {
+                    resolve(reader.result);
+                };
+                reader.readAsDataURL(blob);
+            }
+        })
+    }
+ 
     handleUpload = (imageValue) => {
-        console.log(imageValue);
-        this.setState({ imageValue: imageValue });
+        this.setState({ imageUrl: imageValue });
     }
     handleUploadUrl = async (imageUrl)=>{
        let headers = new Headers(); 
@@ -59,7 +66,7 @@ export class Home extends Component {
         const body = await response.json(); 
                this.setState({ data: body });  
     }
-    CreateImage() {
+    CreateImages(){
         let img = []
         let imgSrc = this.state.data; 
         for (let i = 0; i < imgSrc.length; i++) {
@@ -67,6 +74,10 @@ export class Home extends Component {
             img.push(<img src={imgSrc[i]} width="200px" height="100px" />)
         }
         return img
+    }
+    CreateImage() {
+
+        return <img src={this.state.imageUrl} /> 
     }
 
 
@@ -89,6 +100,11 @@ export class Home extends Component {
                       </div>
                   </div>
                   {this.state && this.state.data &&
+                      <div className="row" >
+                          {this.CreateImages()}
+                      </div>
+                  }
+                  {this.state && this.state.imageUrl &&
                       <div className="row" >
                           {this.CreateImage()}
                       </div>
