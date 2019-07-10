@@ -9,11 +9,15 @@ export class Home extends Component {
         super(props);
         this.state = {
             imageValue: "",
-            imageUrl: ""
+            imageUrl: "",
+            data:""
         }
         this.PasteImage = this.PasteImage.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
+        this.handleUploadUrl = this.handleUploadUrl.bind(this);
     }
 
+    
     
     PasteImage(event) {
         console.log(event);
@@ -40,21 +44,31 @@ export class Home extends Component {
         console.log(imageValue);
         this.setState({ imageValue: imageValue });
     }
-   async handleUploadUrl(imageUrl){
-       console.log(imageUrl);
+    handleUploadUrl = async (imageUrl)=>{
        let headers = new Headers(); 
        headers.set('Access-Control-Allow-Origin', '*'); 
        headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
        headers.set("Content-Type", "application/json");
        headers.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,Authorization');
-       const response = await fetch( "https://localhost:80/api/api", {
-           method: "POST",
-           mode: "cors", 
-
-           headers: headers,
-           body: JSON.stringify(imageUrl)
-        });  
+        const response = await fetch("https://localhost:80/api/api", {
+            method: "POST",
+            mode: "cors",
+            headers: headers,
+            body: JSON.stringify(imageUrl)
+        });
+        const body = await response.json(); 
+               this.setState({ data: body });  
     }
+    CreateImage() {
+        let img = []
+        let imgSrc = this.state.data; 
+        for (let i = 0; i < imgSrc.length; i++) {
+
+            img.push(<img src={imgSrc[i]} width="200px" height="100px" />)
+        }
+        return img
+    }
+
 
 
 
@@ -74,9 +88,12 @@ export class Home extends Component {
                           <UploadUrl onUpload={this.handleUploadUrl} />
                       </div>
                   </div>
-                  <div className="row" >
-                          
-                  </div>
+                  {this.state && this.state.data &&
+                      <div className="row" >
+                          {this.CreateImage()}
+                      </div>
+                  }
+                       
               </div>
           </div> 
           
