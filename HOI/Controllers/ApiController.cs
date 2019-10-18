@@ -18,7 +18,10 @@ namespace HOI.Controllers
     [Route("api/[controller]")]
     public class ApiController : Controller
     {
-       
+       public ApiController()
+        {
+
+        }
 
         // GET api/<controller>/5
         [HttpPost]
